@@ -1,20 +1,16 @@
 import React, { Component } from 'react';
 import { Grid, FormControl, Select, MenuItem, TextField, InputAdornment } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
-import styled from 'styled-components';
 import { inject } from 'mobx-react';
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 
-const FiltersContainer = styled.div`
-  margin-top: 20px;
-`;
 
-const ControlContainer = styled.div`
-  background-color: #c0cde0;
-  border-radius: 5px;
-  padding: 10px;
-`;
+const ControlContainer = {
+  backgroundColor: '#c0cde0',
+  borderRadius: '5px',
+  padding: '10px'
+};
 
 @inject('tasksStore')
 class TasksFilters extends Component {
@@ -54,13 +50,13 @@ class TasksFilters extends Component {
 
   render() {
     return (
-      <FiltersContainer>
+      <div>
         <Grid
           justify="space-between" // Add it here :)
           container
         >
           <Grid item>
-            <ControlContainer>
+            <div style={ControlContainer}>
               <FormControl style={{ width: '220px' }}>
                 <TextField
                   placeholder="Search..."
@@ -75,11 +71,11 @@ class TasksFilters extends Component {
                   }}
                 />
               </FormControl>
-            </ControlContainer>
+            </div>
           </Grid>
 
           <Grid item>
-            <ControlContainer>
+            <div style={ControlContainer}>
               <FormControl style={{ width: '220px' }}>
                 <Select
                   value={this.state.status}
@@ -92,10 +88,10 @@ class TasksFilters extends Component {
                   <MenuItem value={'DONE'}>Done</MenuItem>
                 </Select>
               </FormControl>
-            </ControlContainer>
+            </div>
           </Grid>
         </Grid>
-      </FiltersContainer>
+      </div>
     );
   }
 }

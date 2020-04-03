@@ -1,26 +1,27 @@
 import React, { Component } from 'react';
 import { TextField, FormControl, Button } from '@material-ui/core';
-import styled from 'styled-components';
 import { inject } from 'mobx-react';
 import ErrorMessage from '../../components/ErrorMessage';
+import Router from 'next/router';
 
-const FormWrapper = styled.div`
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
 
-const FormContainer = styled.div`
-  max-width: 480px;
-  width: 100%;
-  background-color: #edf4ff;
-  padding: 30px;
-  border-radius: 5px;
-`;
+const FormWrapper = {
+  width: '100vw',
+  height: '100vh',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center'
+}
 
-@inject('tasksStore', 'routerStore')
+const FormContainer = {
+  maxWidth: '480px',
+  width: '100%',
+  backgroundColor: '#edf4ff',
+  padding: '30px',
+  borderRadius: '5px'
+}
+
+@inject('tasksStore')
 class CreateTaskPage extends Component {
   constructor(props) {
     super(props);
@@ -33,12 +34,12 @@ class CreateTaskPage extends Component {
   }
 
   handleSubmitTask = async () => {
-    const { tasksStore, routerStore } = this.props;
+    const { tasksStore } = this.props;
     const { title, description } = this.state;
 
     try {
       await tasksStore.createTask(title, description);
-      routerStore.push('/tasks');
+      Router.push('/tasks');
     } catch (error) {
       const errorMessage = error.response.data.message;
       this.setState({ errorMessage });
@@ -47,8 +48,8 @@ class CreateTaskPage extends Component {
 
   render() {
     return (
-      <FormWrapper>
-        <FormContainer>
+      <div style={FormWrapper}>
+        <div style={FormContainer}>
           <h1>Create a new task</h1>
           <p>Provide information about the task you wish to complete.</p>
 
@@ -84,8 +85,8 @@ class CreateTaskPage extends Component {
           >
             CREATE TASK
           </Button>
-        </FormContainer>
-      </FormWrapper>
+        </div>
+      </div>
     );
   }
 }

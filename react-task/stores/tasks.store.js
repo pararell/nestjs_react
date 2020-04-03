@@ -1,6 +1,7 @@
 import { observable, action } from 'mobx';
 
 export default class TasksStore {
+  @observable task = null;
   @observable tasks = [];
   @observable filters = { status: '', search: '' };
 
@@ -29,6 +30,16 @@ export default class TasksStore {
   }
 
   @action
+  async fetchTask(id) {
+    this.task = null;
+    const result = await this.tasksService.fetchTask(id);
+
+    if (result) {
+      this.task = result.data;
+    }
+  }
+
+  @action
   async createTask(title, description) {
     const result = await this.tasksService.createTask(title, description);
 
@@ -45,8 +56,8 @@ export default class TasksStore {
   }
 
   @action
-  async updateTaskStatus(id, status) {
-    const task = this.tasks.find(task => task.id === id);
+  async updateTaskStatus(id, status, type) {
+    const task = type === 'task' ? this.task : this.tasks.find(task => task.id === id);
     await this.tasksService.updateTaskStatus(id, status);
     task.status = status;
   }

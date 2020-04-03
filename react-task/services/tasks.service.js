@@ -17,6 +17,10 @@ export default class TasksService extends BaseHttpService {
     return this.get('tasks' + (queryStr ? `?${queryStr}` : ''));
   }
 
+  fetchTask(id) {
+    return this.get(`tasks/${id}`);
+  }
+
   async deleteTask(id) {
     await this.delete(`tasks/${id}`);
   }

@@ -1,29 +1,29 @@
 import React, { Component } from 'react';
 import { Button, TextField } from '@material-ui/core';
-import styled from 'styled-components';
 
-import './SignInPage.scss';
+import Router from 'next/router';
 import { inject } from 'mobx-react';
-import ErrorMessage from '../../components/ErrorMessage';
+import ErrorMessage from '../components/ErrorMessage';
 
-const Heading = styled.h1`
-  margin-top: 0;
-`;
 
-const FormContainer = styled.div`
-  max-width: 480px;
-  width: 100%;
-  background-color: #edf4ff;
-  padding: 30px;
-  border-radius: 5px;
-`;
+const FormContainer = {
+  maxWidth: '480px',
+  width: '100%',
+  backgroundColor: '#edf4ff',
+  padding: '30px',
+  borderRadius: '5px'
+}
 
-const FormField = styled(TextField)`
-  width: 100%;
-`;
+const FullscreenWrapper  = {
+    width: '100vw',
+    height: '100vh',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center'
+}
 
-@inject('userStore', 'routerStore')
-class SignInPage extends Component {
+@inject('userStore')
+ class SignIn extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -39,7 +39,7 @@ class SignInPage extends Component {
 
     try {
       await this.props.userStore.signin(username, password);
-      this.props.routerStore.push('/tasks');
+      Router.push('/tasks');
     } catch (error) {
       const errorMessage = error.response.data.message;
       this.setState({ errorMessage });
@@ -47,22 +47,22 @@ class SignInPage extends Component {
   };
 
   goToSignUp = () => {
-    this.props.routerStore.push('/signup')
+    Router.push('/signup')
   };
 
   render() {
     const { errorMessage } = this.state;
 
     return (
-      <div className="fullscreen-wrapper">
-        <FormContainer>
-          <Heading>Hello!</Heading>
+      <div style={FullscreenWrapper}>
+        <div style={FormContainer}>
+          <h1>Hello!</h1>
           <p>Fill in your username and password to sign in.</p>
-          
+
           {errorMessage && <ErrorMessage message={this.state.errorMessage} />}
 
           <div>
-            <FormField
+            <TextField
               id="outlined-name"
               label="Username"
               margin="dense"
@@ -71,7 +71,7 @@ class SignInPage extends Component {
             />
           </div>
           <div>
-            <FormField
+            <TextField
               id="outlined-name"
               label="Password"
               margin="dense"
@@ -96,10 +96,10 @@ class SignInPage extends Component {
               Don't have an account? Sign up now!
             </Button>
           </div>
-        </FormContainer>
+        </div>
       </div>
     );
   }
 }
 
-export default SignInPage;
+export default SignIn;

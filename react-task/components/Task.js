@@ -10,17 +10,9 @@ import {
   Grid
 } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
-import styled from 'styled-components';
 import { inject } from 'mobx-react';
+import Link from 'next/link';
 
-const CardContainer = styled.div`
-  margin-bottom: 20px;
-`;
-
-const CardTitle = styled.h1`
-  margin: 8px 0;
-  font-size: 22px;
-`;
 
 @inject('tasksStore')
 class Task extends Component {
@@ -29,23 +21,23 @@ class Task extends Component {
   };
 
   handleStatusChange = e => {
-    this.props.tasksStore.updateTaskStatus(this.props.id, e.target.value);
+    this.props.tasksStore.updateTaskStatus(this.props.id, e.target.value, this.props.type);
   };
 
   render() {
-    const { title, description } = this.props;
+    const { id, title, description } = this.props;
 
     return (
-      <CardContainer>
+      <div>
         <Card>
           <CardContent>
-            <CardTitle>{title}</CardTitle>
+            <h1>{title}</h1>
             {description}
           </CardContent>
           <CardActions style={{ padding: '14px' }} disableSpacing>
             <Grid
               justify="space-between" // Add it here :)
-              container 
+              container
             >
               <Grid item>
                 <FormControl style={{ width: '140px' }}>
@@ -62,6 +54,12 @@ class Task extends Component {
               </Grid>
 
               <Grid item>
+                <Link href="/tasks/[id]" as={`/tasks/${id}`}>
+                  <a>Task detail</a>
+                </Link>
+              </Grid>
+
+              <Grid item>
                 <IconButton onClick={this.deleteTask}>
                   <DeleteIcon color="error" />
                 </IconButton>
@@ -69,7 +67,7 @@ class Task extends Component {
             </Grid>
           </CardActions>
         </Card>
-      </CardContainer>
+      </div>
     );
   }
 }
