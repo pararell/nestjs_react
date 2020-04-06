@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "next -p 4200",
     "build": "next build",
-    "start": "next start"
+    "export": "next export",
+    "start": "next start -p 4200"
   },
   "dependencies": {
     "@material-ui/core": "^4.9.8",
